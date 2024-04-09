@@ -25,7 +25,7 @@ def calc_log_of_2(num):
 def calc_power_of_2(num):
    return 2 ** num
 
-# updates the cider, subnet and host based on the users choice
+# updates the cider, subnet and host based on the user's partition choice
 def update_cidr(choice, choiceNum, cidr):
     if choice == "subnets":
         subnet_bits = calc_log_of_2(choiceNum)
@@ -44,10 +44,11 @@ def get_network_broadcast_addr(subnet):
      network = IPv4Network(f"{ip}/{str(cidr)}", strict=False)
      return str(network.network_address), str(network.broadcast_address)
 
+# converts mask from cidr notation to decimal presentation
 def get_subnet_in_decimal(ip, cidr):
    return str(IPv4Network(f"{ip}/{str(cidr)}", strict=False).netmask)
 
-# returns the first two and last two subnets in the network - given the ip and the cidr
+# returns the first and last subnets in the network (maximum two each) - given the ip and the cidr
 def get_subnets(ip, cidr, newCidr):
   network = IPv4Network(f"{ip}/{str(cidr)}", strict=False)
   subnets = list(network.subnets(prefixlen_diff=newCidr - cidr))
@@ -58,7 +59,7 @@ def get_subnets(ip, cidr, newCidr):
   
   return subnets[:2], subnets[-2:]
 
-# returns the 
+# prints the Network and Broadcast Address of the first and last subnets (maximum two each)
 def subnets_info(subnetList):
    # if the list is empty - number of subnets is less than 3 so they are already printed
    if not subnetList:
@@ -69,6 +70,7 @@ def subnets_info(subnetList):
     print(f"Network Address: {networkAddr}")
     print(f"Broadcast Address: {broadcastAddr}")
 
+# gets the details from the user
 def get_input():
     # get IP Address
     ip = input("Please enter an IP address: ")
